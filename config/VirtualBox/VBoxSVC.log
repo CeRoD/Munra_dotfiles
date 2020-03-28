@@ -1,0 +1,89 @@
+00:00:00.002466 main     VirtualBox XPCOM Server 6.1.2 r135662 linux.amd64 (Jan 14 2020 22:33:16) release log
+00:00:00.002468 main     Log opened 2020-02-02T03:02:49.706813000Z
+00:00:00.002469 main     Build Type: release
+00:00:00.002470 main     OS Product: Linux
+00:00:00.002470 main     OS Release: 5.4.14-arch1-1
+00:00:00.002471 main     OS Version: #1 SMP PREEMPT Thu, 23 Jan 2020 10:07:05 +0000
+00:00:00.002488 main     DMI Product Name: HP Pavilion Gaming Laptop 15-cx0xxx
+00:00:00.002496 main     DMI Product Version: Type1ProductConfigId
+00:00:00.002500 main     Firmware type: UEFI
+00:00:00.003327 main     Secure Boot: Disabled
+00:00:00.003378 main     Host RAM: 7852MB (7.6GB) total, 6132MB (5.9GB) available
+00:00:00.003380 main     Executable: /usr/lib/virtualbox/VBoxSVC
+00:00:00.003380 main     Process ID: 82035
+00:00:00.003381 main     Package type: LINUX_64BITS_GENERIC (OSE)
+00:00:00.004663 main     IPC socket path: /tmp/.vbox-munra-ipc/ipcd
+00:00:00.115092 nspr-2   VirtualBox: object creation starts
+00:00:00.115204 nspr-2   Home directory: '/home/munra/.config/VirtualBox'
+00:00:00.133007 nspr-2   Loading settings file "/home/munra/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:00:00.151652 nspr-2   USB: Unknown USB device detected (idVendor: 0x8087, idProduct: 0x0aaa)
+00:00:00.151949 nspr-2   Successfully initialised host USB using sysfs
+00:00:00.167182 nspr-2   NetIfAdpCtlOut: VBoxNetAdpCtl: Error while retrieving link speed for wlo1: VBoxNetAdpCtl: ioctl failed: Operation not supported
+00:00:00.168676 nspr-2   HostDnsMonitor: initializing
+00:00:00.169051 nspr-2   NAT: resolv.conf: nameserver 8.8.8.8
+00:00:00.169076 nspr-2   NAT: resolv.conf: nameserver 8.8.4.4
+00:00:00.169098 nspr-2   HostDnsMonitor: updating information
+00:00:00.169127 nspr-2   HostDnsMonitor: old information
+00:00:00.169135 nspr-2     no server entries
+00:00:00.169142 nspr-2     no domain set
+00:00:00.169147 nspr-2     no search string entries
+00:00:00.169154 nspr-2   HostDnsMonitor: new information
+00:00:00.169159 nspr-2     server 1: 8.8.8.8
+00:00:00.169166 nspr-2     server 2: 8.8.4.4
+00:00:00.169173 nspr-2     no domain set
+00:00:00.169178 nspr-2     no search string entries
+00:00:00.298964 nspr-2   rtldrNativeLoad: dlopen('/usr/lib/virtualbox/ExtensionPacks/Oracle_VM_VirtualBox_Extension_Pack/linux.amd64/VBoxPuelMain.so', RTLD_NOW | RTLD_LOCAL) failed: /usr/lib/virtualbox/ExtensionPacks/Oracle_VM_VirtualBox_Extension_Pack/linux.amd64/VBoxPuelMain.so: undefined symbol: RTVfsFileGetSize
+00:00:00.314794 nspr-2   VD: VDInit finished with VINF_SUCCESS
+00:00:00.324917 nspr-2   ERROR [COM]: aRC=NS_ERROR_FAILURE (0x80004005) aIID={027bc463-929c-40e8-bf16-fea557cd8e7e} aComponent={SystemPropertiesWrap} aText={Cannot determine default Guest Additions ISO location. Most likely they are not available}, preserve=false aResultDetail=0
+00:00:00.404744 nspr-2   Loading settings file "/home/munra/Storage/VirtualBox_VMs/Windows 10/Windows 10.vbox" with version "1.15-linux"
+00:00:00.423525 nspr-2   VirtualBox: object created
+00:00:03.449638 nspr-4   Launched VM: 469770432 pid: 82110 (0x140be) frontend: GUI/Qt name: Windows 10
+00:00:04.001071 nspr-5   Load [/usr/lib/virtualbox/ExtensionPacks/Oracle_VM_VirtualBox_Extension_Pack/linux.amd64/VBoxHostWebcam.so] vrc=VINF_SUCCESS
+00:00:04.289760 nspr-5   ERROR [COM]: aRC=VBOX_E_IPRT_ERROR (0x80bb0005) aIID={85632c68-b5bb-4316-a900-5eb28d3413df} aComponent={SessionMachine} aText={Saved screenshot data is not available (VERR_NOT_SUPPORTED)}, preserve=false aResultDetail=-37
+00:00:04.310578 nspr-5   NetIfAdpCtlOut: VBoxNetAdpCtl: Error while retrieving link speed for wlo1: VBoxNetAdpCtl: ioctl failed: Operation not supported
+00:00:04.723197 nspr-5   Saving settings file "/home/munra/Storage/VirtualBox_VMs/Windows 10/Windows 10.vbox" with version "1.15-linux"
+00:00:05.334037 nspr-3   Saving settings file "/home/munra/Storage/VirtualBox_VMs/Windows 10/Windows 10.vbox" with version "1.15-linux"
+00:00:32.933281 nspr-3   NetIfAdpCtlOut: VBoxNetAdpCtl: Error while retrieving link speed for wlo1: VBoxNetAdpCtl: ioctl failed: Operation not supported
+00:00:32.942190 nspr-7   NetIfAdpCtlOut: VBoxNetAdpCtl: Error while retrieving link speed for wlo1: VBoxNetAdpCtl: ioctl failed: Operation not supported
+00:00:40.257851 nspr-2   Saving settings file "/home/munra/Storage/VirtualBox_VMs/Windows 10/Windows 10.vbox" with version "1.15-linux"
+00:00:42.432568 nspr-7   Launched VM: 15568 pid: 82719 (0x1431f) frontend: GUI/Qt name: Windows 10
+00:00:42.766604 nspr-6   Load [/usr/lib/virtualbox/ExtensionPacks/Oracle_VM_VirtualBox_Extension_Pack/linux.amd64/VBoxHostWebcam.so] vrc=VINF_SUCCESS
+00:00:42.922204 nspr-7   ERROR [COM]: aRC=VBOX_E_IPRT_ERROR (0x80bb0005) aIID={85632c68-b5bb-4316-a900-5eb28d3413df} aComponent={SessionMachine} aText={Saved screenshot data is not available (VERR_NOT_SUPPORTED)}, preserve=false aResultDetail=-37
+00:00:42.935071 nspr-8   NetIfAdpCtlOut: VBoxNetAdpCtl: Error while retrieving link speed for wlo1: VBoxNetAdpCtl: ioctl failed: Operation not supported
+00:00:43.256917 nspr-5   Saving settings file "/home/munra/Storage/VirtualBox_VMs/Windows 10/Windows 10.vbox" with version "1.15-linux"
+00:01:00.007841 nspr-8   NetIfAdpCtlOut: VBoxNetAdpCtl: Error while retrieving link speed for wlo1: VBoxNetAdpCtl: ioctl failed: Operation not supported
+00:01:00.013299 nspr-5   NetIfAdpCtlOut: VBoxNetAdpCtl: Error while retrieving link speed for wlo1: VBoxNetAdpCtl: ioctl failed: Operation not supported
+00:01:06.109401 nspr-3   Saving settings file "/home/munra/Storage/VirtualBox_VMs/Windows 10/Windows 10.vbox" with version "1.15-linux"
+00:01:08.084826 nspr-8   Launched VM: 952215216 pid: 83129 (0x144b9) frontend: GUI/Qt name: Windows 10
+00:01:08.428892 nspr-5   Load [/usr/lib/virtualbox/ExtensionPacks/Oracle_VM_VirtualBox_Extension_Pack/linux.amd64/VBoxHostWebcam.so] vrc=VINF_SUCCESS
+00:01:08.684557 nspr-6   ERROR [COM]: aRC=VBOX_E_IPRT_ERROR (0x80bb0005) aIID={85632c68-b5bb-4316-a900-5eb28d3413df} aComponent={SessionMachine} aText={Saved screenshot data is not available (VERR_NOT_SUPPORTED)}, preserve=false aResultDetail=-37
+00:01:08.696424 nspr-4   NetIfAdpCtlOut: VBoxNetAdpCtl: Error while retrieving link speed for wlo1: VBoxNetAdpCtl: ioctl failed: Operation not supported
+00:02:03.313742 nspr-7   NetIfAdpCtlOut: VBoxNetAdpCtl: Error while retrieving link speed for wlo1: VBoxNetAdpCtl: ioctl failed: Operation not supported
+00:02:03.327632 nspr-7   NetIfAdpCtlOut: VBoxNetAdpCtl: Error while retrieving link speed for wlo1: VBoxNetAdpCtl: ioctl failed: Operation not supported
+00:05:41.678472 nspr-4   Saving settings file "/home/munra/Storage/VirtualBox_VMs/Windows 10/Windows 10.vbox" with version "1.15-linux"
+00:05:51.266364 nspr-6   Saving settings file "/home/munra/Storage/VirtualBox_VMs/Windows 10/Windows 10.vbox" with version "1.15-linux"
+00:14:37.010669 dns-monitor NAT: resolv.conf: nameserver 8.8.8.8
+00:14:37.010693 dns-monitor NAT: resolv.conf: nameserver 8.8.4.4
+00:14:37.010703 dns-monitor HostDnsMonitor: updating information
+00:14:37.010707 dns-monitor HostDnsMonitor: unchanged
+00:17:27.748891 dns-monitor NAT: resolv.conf: nameserver 8.8.8.8
+00:17:27.748938 dns-monitor NAT: resolv.conf: nameserver 8.8.4.4
+00:17:27.748978 dns-monitor HostDnsMonitor: updating information
+00:17:27.748994 dns-monitor HostDnsMonitor: unchanged
+00:20:59.879890 dns-monitor NAT: resolv.conf: nameserver 8.8.8.8
+00:20:59.879910 dns-monitor NAT: resolv.conf: nameserver 8.8.4.4
+00:20:59.879921 dns-monitor HostDnsMonitor: updating information
+00:20:59.879925 dns-monitor HostDnsMonitor: unchanged
+00:24:27.222761 dns-monitor NAT: resolv.conf: nameserver 8.8.8.8
+00:24:27.222782 dns-monitor NAT: resolv.conf: nameserver 8.8.4.4
+00:24:27.222792 dns-monitor HostDnsMonitor: updating information
+00:24:27.222796 dns-monitor HostDnsMonitor: unchanged
+00:39:25.872296 dns-monitor NAT: resolv.conf: nameserver 8.8.8.8
+00:39:25.872323 dns-monitor NAT: resolv.conf: nameserver 8.8.4.4
+00:39:25.872334 dns-monitor HostDnsMonitor: updating information
+00:39:25.872339 dns-monitor HostDnsMonitor: unchanged
+00:41:30.336333 dns-monitor NAT: resolv.conf: nameserver 8.8.8.8
+00:41:30.336372 dns-monitor NAT: resolv.conf: nameserver 8.8.4.4
+00:41:30.336386 dns-monitor HostDnsMonitor: updating information
+00:41:30.336391 dns-monitor HostDnsMonitor: unchanged
+01:12:52.919757 nspr-4   Saving settings file "/home/munra/Storage/VirtualBox_VMs/Windows 10/Windows 10.vbox" with version "1.15-linux"

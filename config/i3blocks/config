@@ -1,0 +1,243 @@
+separator_block_width=15
+
+# Window title
+[window_title]
+command=/home/munra/.config/i3blocks/window_title
+label= 🗔
+signal=10
+#command=xtitle
+align=center
+min_width=1
+interval=2
+color=#fdf6e3
+#color=#cb4b16
+
+[separator]
+
+
+#volume
+[volume]
+command=/home/munra/.config/i3blocks/volume
+label= 
+instance=Master
+interval=1
+signal=10
+color=#fdf6e3
+
+[separator]
+
+
+##disk_space
+#[disk]
+#command=/home/munra/.config/i3blocks/disk
+#label=
+#
+#
+#instance=/mnt/data
+#interval=30
+
+
+
+# Network interface monitoring
+#
+# If the instance is not specified, use the interface used for default route.
+# The address can be forced to IPv4 or IPv6 with -4 or -6 switches.
+
+#wifi signal
+
+[wifi]
+command=/home/munra/.config/i3blocks/wifi
+interval=30
+label= 
+color=#fdf6e3
+
+#ssid (network name)
+
+[separator]
+
+
+[ssid]
+command=/home/munra/.config/i3blocks/ssid
+label= 
+color=#fdf6e3
+#color=#33CCFF
+interval=4
+
+#IP address
+
+#[iface]
+
+[separator]
+
+#command=/home/munra/.config/i3blocks/iface
+#instance=wlo1
+#label=
+#
+#color=#FFBA00
+#interval=1
+#separator=false
+
+
+
+#bandwidth
+
+[bandwidth-4]
+command=/home/munra/.config/i3blocks/bandwidth-4
+label=bandwindth
+instance=wlo1
+interval=1
+color=#efefef
+#[load_average]
+#interval=10
+
+[bandwidth]
+command=/home/munra/.config/i3blocks/bandwidth
+#label=bandwindth
+instance=wlo1
+interval=1
+color=#efefef
+#[load_average]
+#interval=10
+
+
+
+
+# Battery indicator
+#
+# The battery instance defaults to 0.
+#[battery-3]
+command=/home/munra/.config/i3blocks/battery-3
+label=BAT
+#label=
+interval=2
+color=#fdf6e3
+#color=#33CCFF
+
+
+#weather /
+
+#[weather-2]
+#command=/home/munra/.config/i3blocks/weather
+#label=
+#interval=1
+
+
+
+
+#[wifi-2]
+#command=/home/munra/.config/i3blocks/wifi-2
+#label=wifi:
+#INTERFACE=wlo1
+#interval=60
+
+#[click]
+#full_text=Click me!
+#command=echo "Got clicked with button $button"
+#color=#F79494
+
+# Guess the weather hourly
+#[weather]
+#command=curl -Ss 'https://wttr.in?0&T&Q' | cut -c 16- | head -2 | xargs echo
+#interval=60
+#color=#A4C2F4
+
+## Query my default IP address only on startup
+#[ip]
+#command=hostname -i | awk '{ print "IP:" $1 }'
+#interval=once
+#color=#91E78B
+
+# Update time every 5 seconds
+#[time]
+#command=date +%T
+#interval=1
+
+#[cpu]
+#command=/home/munra/.config/i3blocks/cpu
+#interval=15
+#label=💻
+
+
+#[battery]
+#command=/home/munra/.config/i3blocks/battery
+#interval=5
+
+
+
+##ram usage
+#[ram]
+#command=/home/munra/.config/i3blocks/ram
+#label=
+##
+#interval=1
+#signal=10
+#color=#3188aa
+
+
+[battery2]
+command=/home/munra/.config/i3blocks/battery2
+markup=pango
+interval=5
+color=#fdf6e3
+#color=#33CCFF
+
+
+
+
+# Date Time
+#
+[time]
+#label=
+#command= date '+%A/%d %B   %H:%M:%S '
+command= date '+  %H:%M:%S '
+interval=1
+color=#fdf6e3
+#color=#33CCFF
+#color=#10ffff
+
+
+##[battery-plus]
+##command=/home/munra/.config/i3blocks/battery-plus
+##markup=pango
+##instance=BAT0
+##interval=30
+#_FONT=FontAwesome
+#_PERCENT=&#x25;
+#_HIDE_IF_CHARGED=false
+#_USE_BATT_GRADIENT=false
+#_SYMBOLS_ONLY=false
+#_HIDE_PERCENTAGE=false
+#_HIDE_TIME_REMAINING=true
+#_HIDE_TIME_TO_FULL=true
+#_SHOW_CHARGE_DIRECTION=true
+#_CAPACITY_ALERT=75
+#_CRITICAL_ACTION=notify
+#_LOW_ACTION=notify
+#_NOTIFY_PROGRAM=notify-send
+#_NOTIFY_EXPIRES=1500
+#_NOTIFY_THROTTLE=120
+#_COLOR_FULLY_CHARGED=
+#_COLOR_CHARGING=yellow
+#_COLOR_DISCHARGING=yellow
+#_COLOR_PENDING=blue
+#_COLOR_ERROR=red
+#_COLOR_BATTERY=white
+#_COLOR_ALERT=orange
+#_COLOR_DIRECTIONAL_UP=green
+#_COLOR_DIRECTIONAL_DOWN=red
+#_COLOR_GRADIENT_START=#0000FF
+#_COLOR_GRADIENT_END=#FF0000
+#_SYMBOL_FULLY_CHARGED=
+#_SYMBOL_CHARGING=&#xf0e7;
+#_SYMBOL_DISCHARGING=
+#_SYMBOL_UNKNOWN=&#xf128;
+#_SYMBOL_PENDING=&#xf254;
+#_SYMBOL_ERROR=&#xf00d;
+#_SYMBOL_ALERT=&#xf071;
+#_SYMBOL_BATT_100=&#xf240;
+#_SYMBOL_BATT_75=&#xf241;
+#_SYMBOL_BATT_50=&#xf242;
+#_SYMBOL_BATT_25=&#xf243;
+#_SYMBOL_BATT_0=&#xf244;
+#_SYMBOL_DIRECTION_UP=&#8593;
+#_SYMBOL_DIRECTION_DOWN=&#8595;
