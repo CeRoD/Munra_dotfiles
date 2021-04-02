@@ -1,4 +1,9 @@
 #+TITLE: Emacs Configuration
 # #+PROPERTY: header-args:emacs-lisp :tangle /home/munra/.doom.d/config.el
-#+PROPERTY: header-args :tangle /home/munra/.doom.d/config.el
+# #+PROPERTY: header-args :tangle /home/munra/.doom.d/config.el
 #+AUTHOR: Cesar Rodriguez
+
+This is the new README for the dot files of Munra, now it is written in org-mode
+format.
+
+* Table of Contents :toc:
