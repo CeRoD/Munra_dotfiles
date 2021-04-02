@@ -1,0 +1,81 @@
+import XMonad
+import XMonad.Hooks.ManageDocks
+import XMonad.Util.EZConfig
+import Graphics.X11.ExtraTypes.XF86
+import System.IO
+import XMonad.Layout.Spacing
+import XMonad.Actions.SpawnOn
+import XMonad.Util.SpawnOnce
+import XMonad.Util.Run
+import XMonad.Util.EZConfig
+
+
+myNormalBorderColour = "#ebdbb2"
+myFocusedBorderColour = "#c050f0"
+
+-- Autostart
+
+--myStartupHook :: X ()
+--myStartupHook = do
+--          spawnOnce "alacritty -e tmux &"
+--          spawnOnce "~/.fehbg &"
+
+
+
+lowerVolume         = "<XF86AudioLowerVolume>"
+lowerVolumeCMD      = "amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)"
+
+raiseVolume         = "<XF86AudioRaiseVolume>"
+raiseVolumeCMD      = "amixer set Master 2%+ && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)"
+
+muteVolume          = "<XF86AudioMute>"
+muteVolumeCMD       = "amixer set Master toggle && if amixer get Master | grep -Fq '[off]'; then volnoti-show -m; else volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1); fi"
+
+backLightUp         = "<XF86AudioNext>"
+backLightUpCMD      = "light -A 0.2"
+
+backLightDown       = "<XF86AudioPrev>"
+backLightDownCMD    = "light -U 0.2"
+
+myKeys = [ (raiseVolume     , spawn raiseVolumeCMD               ) -- raise volume
+         , (lowerVolume     , spawn lowerVolumeCMD               ) -- lower volume
+         , (muteVolume      , spawn muteVolumeCMD                ) -- mute volume
+         , (backLightUp     , spawn backLightUpCMD               ) -- Backlight up
+         , (backLightDown   , spawn backLightDownCMD             ) -- Backlight down
+         , ("M-S-b"         , spawn "firefox"                ) -- launch browser
+         , ("M-<Return>"    , spawn myTerminal                   ) -- launch terminal
+         , ("M-p"           , spawn "rofi -show run"             ) -- launch rofi
+         ]
+
+
+myTerminal  = "alacritty -e tmux"
+
+myBorderWidth = 1
+
+myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
+
+myLayout = smartSpacing 2 $ (tiled ||| Full)
+               where
+	           tiled = Tall nmaster delta ratio
+--     -- The default number of windows in the master pane
+		   nmaster = 1
+--     -- Default proportion of screen occupied by master pane
+		   ratio = 1/2
+--     -- Percent of screen to increment by when resizing panes
+		   delta = 3/100
+
+myConfig = defaultConfig
+    { terminal    = myTerminal
+    , modMask     = mod4Mask
+    , borderWidth = myBorderWidth
+    , normalBorderColor = myNormalBorderColour
+    , focusedBorderColor = myNormalBorderColour
+    , layoutHook         = avoidStruts $ myLayout
+    , workspaces         = myWorkspaces
+    --, startupHook        = myStartupHook
+    }
+    `additionalKeysP`      myKeys
+
+
+main = do
+    xmonad $ myConfig

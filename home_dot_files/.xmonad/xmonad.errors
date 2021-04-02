@@ -1,0 +1,22 @@
+
+xmonad.hs:163:16: warning: [-Wdeprecations]
+    In the use of ‘spacing’ (imported from XMonad.Layout.Spacing):
+    Deprecated: "Use spacingRaw instead."
+    |
+163 |              $ spacing 1
+    |                ^^^^^^^
+
+xmonad.hs:166:44: warning: [-Wdeprecations]
+    In the use of ‘spacing’ (imported from XMonad.Layout.Spacing):
+    Deprecated: "Use spacingRaw instead."
+    |
+166 | myLayoutHook = avoidStruts $ mouseResize $ spacing 1 $ myLayout
+    |                                            ^^^^^^^
+
+xmonad.hs:183:12: warning: [-Wdeprecations]
+    In the use of ‘defaultConfig’
+    (imported from XMonad, but defined in XMonad.Config):
+    Deprecated: "Use def (from Data.Default, and re-exported by XMonad and XMonad.Config) instead."
+    |
+183 | myConfig = defaultConfig
+    |            ^^^^^^^^^^^^^

@@ -1,0 +1,5 @@
+Xft.dpi: 120
+
+Xcursor.theme: Google_Cursor
+
+st.font: Consolas:bold:pixelsize=20:antialias=true:autohint=true
