@@ -1,0 +1,4 @@
+#+TITLE: Emacs Configuration
+# #+PROPERTY: header-args:emacs-lisp :tangle /home/munra/.doom.d/config.el
+#+PROPERTY: header-args :tangle /home/munra/.doom.d/config.el
+#+AUTHOR: Cesar Rodriguez
