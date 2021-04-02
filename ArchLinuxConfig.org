@@ -1,0 +1,23 @@
+#+TITLE: Arch Linux Config
+
+* Config Firefox
+** Theme CSS config ( a more linux native look )
+use https://github.com/rafaelmardojai/firefox-gnome-theme and
+for additional config info use https://github.com/kurogetsusai/firefox-gnome-theme
+
+** UI font
+change the UI font through userChrome.css
+#+begin_src css
+/* Global UI font */
+*{      /* font-size: 30pt !important; font-weight: bold !important; */
+font-family: Verdana !important;   }
+#+end_src
+
+or
+#+begin_src css
+    * {
+     font-family: "FONTNAME";
+    }
+
+
+#+end_src
