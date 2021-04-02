@@ -1,0 +1,60 @@
+00:00:00.021152 main     VirtualBox XPCOM Server 6.1.18 r142142 linux.amd64 (Jan 20 2021 06:48:10) release log
+00:00:00.021159 main     Log opened 2021-02-06T02:08:39.876506000Z
+00:00:00.021161 main     Build Type: release
+00:00:00.021168 main     OS Product: Linux
+00:00:00.021171 main     OS Release: 5.10.11-arch1-1
+00:00:00.021174 main     OS Version: #1 SMP PREEMPT Wed, 27 Jan 2021 13:53:16 +0000
+00:00:00.021237 main     DMI Product Name: HP Pavilion Gaming Laptop 15-cx0xxx
+00:00:00.021268 main     DMI Product Version: Type1ProductConfigId
+00:00:00.021279 main     Firmware type: UEFI
+00:00:00.023654 main     Secure Boot: Disabled
+00:00:00.023763 main     Host RAM: 7843MB (7.6GB) total, 6160MB (6.0GB) available
+00:00:00.023786 main     Executable: /usr/lib/virtualbox/VBoxSVC
+00:00:00.023788 main     Process ID: 3007
+00:00:00.023789 main     Package type: LINUX_64BITS_GENERIC (OSE)
+00:00:00.028017 main     IPC socket path: /tmp/.vbox-munra-ipc/ipcd
+00:00:00.163766 nspr-2   VirtualBox: object creation starts
+00:00:00.163945 nspr-2   Home directory: '/home/munra/.config/VirtualBox'
+00:00:00.176526 nspr-2   Loading settings file "/home/munra/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:00:00.186734 nspr-2   USB: Unknown USB device detected (idVendor: 0x8087, idProduct: 0x0aaa)
+00:00:00.187120 nspr-2   Successfully initialised host USB using sysfs
+00:00:00.207955 nspr-2   NetIfAdpCtlOut: VBoxNetAdpCtl: Error while retrieving link speed for wlo1: VBoxNetAdpCtl: ioctl failed: Operation not supported
+00:00:00.209035 nspr-2   HostDnsMonitor: initializing
+00:00:00.209335 nspr-2   NAT: resolv.conf: nameserver 8.8.8.8
+00:00:00.209345 nspr-2   NAT: resolv.conf: nameserver 8.8.4.4
+00:00:00.209352 nspr-2   HostDnsMonitor: updating information
+00:00:00.209364 nspr-2   HostDnsMonitor: old information
+00:00:00.209366 nspr-2     no server entries
+00:00:00.209368 nspr-2     no domain set
+00:00:00.209369 nspr-2     no search string entries
+00:00:00.209371 nspr-2   HostDnsMonitor: new information
+00:00:00.209373 nspr-2     server 1: 8.8.8.8
+00:00:00.209375 nspr-2     server 2: 8.8.4.4
+00:00:00.209377 nspr-2     no domain set
+00:00:00.209378 nspr-2     no search string entries
+00:00:00.394211 nspr-2   VD: VDInit finished with VINF_SUCCESS
+00:00:00.395336 nspr-2   ERROR [COM]: aRC=NS_ERROR_FAILURE (0x80004005) aIID={027bc463-929c-40e8-bf16-fea557cd8e7e} aComponent={SystemPropertiesWrap} aText={Cannot determine default Guest Additions ISO location. Most likely they are not available}, preserve=false aResultDetail=0
+00:00:00.441200 nspr-2   Loading settings file "/home/munra/Storage/VirtualBox_VMs/Windows 10/Windows 10.vbox" with version "1.15-linux"
+00:00:00.466415 nspr-2   Loading settings file "/home/munra/Storage/VirtualBox_VMs/Fedora_33/Fedora_33.vbox" with version "1.17-linux"
+00:00:00.508842 nspr-2   OCI: Local config file '/home/munra/.config/VirtualBox/oci_config' does not exist
+00:00:00.508896 nspr-2   OCI: Original config file '/home/munra/.oci/config' does not exist
+00:00:00.508905 nspr-2   OCI: Reading profiles finished with status NS_OK
+00:00:00.508923 nspr-2   ExtPack: Created cloud provider 'OCI' (hrc=NS_OK)
+00:00:00.508970 nspr-2   VirtualBox: object created
+00:02:30.561907 nspr-4   Launched VM: 2013277488 pid: 3103 (0xc1f) frontend: GUI/Qt name: Fedora_33
+00:02:31.334759 nspr-2   Load [/usr/lib/virtualbox/ExtensionPacks/Oracle_VM_VirtualBox_Extension_Pack/linux.amd64/VBoxHostWebcam.so] vrc=VINF_SUCCESS
+00:02:34.227540 nspr-5   ERROR [COM]: aRC=VBOX_E_IPRT_ERROR (0x80bb0005) aIID={85632c68-b5bb-4316-a900-5eb28d3413df} aComponent={SessionMachine} aText={Saved screenshot data is not available (VERR_NOT_SUPPORTED)}, preserve=false aResultDetail=-37
+00:02:34.234698 nspr-2   NetIfAdpCtlOut: VBoxNetAdpCtl: Error while retrieving link speed for wlo1: VBoxNetAdpCtl: ioctl failed: Operation not supported
+00:08:41.691644 nspr-3   Saving settings file "/home/munra/Storage/VirtualBox_VMs/Fedora_33/Fedora_33.vbox" with version "1.17-linux"
+00:09:46.314678 nspr-3   Saving settings file "/home/munra/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:09:46.395742 nspr-7   Saving settings file "/home/munra/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:09:46.474273 nspr-2   Saving settings file "/home/munra/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:09:46.530154 nspr-3   Saving settings file "/home/munra/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:09:52.087977 main     VirtualBox: object deletion starts
+00:09:52.088060 main     ERROR [COM]: aRC=VBOX_E_OBJECT_IN_USE (0x80bb000c) aIID={ad47ad09-787b-44ab-b343-a082a3f2dfb1} aComponent={MediumWrap} aText={Medium '/home/munra/Storage/VirtualBox_VMs/Windows 10/Windows 10.vdi' cannot be closed because it is still attached to 1 virtual machines}, preserve=false aResultDetail=0
+00:09:52.088325 main     ERROR [COM]: aRC=VBOX_E_OBJECT_IN_USE (0x80bb000c) aIID={ad47ad09-787b-44ab-b343-a082a3f2dfb1} aComponent={MediumWrap} aText={Medium '/home/munra/Storage/VirtualBox_VMs/Fedora_33/Fedora_33.vdi' cannot be closed because it is still attached to 1 virtual machines}, preserve=false aResultDetail=0
+00:09:52.089006 main     HostDnsMonitor: shutting down ...
+00:09:52.105271 main     HostDnsMonitor: shut down
+00:09:52.237188 Watcher  ERROR [COM]: aRC=E_ACCESSDENIED (0x80070005) aIID={d0a0163f-e254-4e5b-a1f2-011cf991c38d} aComponent={VirtualBoxWrap} aText={The object is not ready}, preserve=false aResultDetail=0
+00:09:57.122192 main     {00007ff67c01eae0} HostPowerServiceLinux::~HostPowerServiceLinux: RTThreadWait() for 5000 ms failed with VERR_TIMEOUT
+00:09:57.122904 main     VirtualBox: object deleted

@@ -1,0 +1,136 @@
+Config {
+
+   -- appearance
+     --font =         "xft:Font Awesome 5 Free Solid:style=solid:size=9, Deja Vu Sans Oblique Mono:style=bold:size=10:antialias=true"
+     font =         "xft:Fira Mono for Powerline:style=Bold:size=11:antialias=true, Font Awesome 5 Free Solid:style=solid:size=10"
+   , bgColor =      "#282828"
+   , fgColor =      "#646464"
+   , alpha = 50
+   -- , position = Static { xpos = 0 , ypos = 1040, width = 1920, height = 24 }
+   -- , position =     Top
+   , position =     Bottom
+   , border =       BottomB
+   , borderColor =  "#646464"
+   , iconRoot = "/home/munra/.xmonad/xpm/"  -- default: "."
+
+
+   -- layout
+   , sepChar =  "%"   -- delineator between plugin names and straight text
+   , alignSep = "}{"  -- separator between left-right alignment
+   -- , template = " %StdinReader% }{ %multicpu%  %coretemp%  %memory%  %wlo1wi%  %dynnetwork%  %date%  %battery% "
+   --, template = " %StdinReader% }{ %wlo1wi%  %dynnetwork%  %date%  %battery% "
+   , template = " %UnsafeStdinReader% }{ %wlo1wi%  %dynnetwork%  %date%  %battery% "
+
+   -- general behavior
+   , lowerOnStart =     True    -- send to bottom of window stack on start
+   , hideOnStart =      False   -- start with window unmapped (hidden)
+   , allDesktops =      True    -- show on all desktops
+   , overrideRedirect = True    -- set the Override Redirect flag (Xlib)
+   , pickBroadest =     False   -- choose widest display (multi-monitor)
+   , persistent =       True    -- enable/disable hiding (True = disabled)
+
+   -- plugins
+   --   Numbers can be automatically colored according to their value. xmobar
+   --   decides color based on a three-tier/two-cutoff system, controlled by
+   --   command options:
+   --     --Low sets the low cutoff
+   --     --High sets the high cutoff
+   --
+   --     --low sets the color below --Low cutoff
+   --     --normal sets the color between --Low and --High cutoffs
+   --     --High sets the color above --High cutoff
+   --
+   --   The --template option controls how the plugin is displayed. Text
+   --   color can be set by enclosing in <fc></fc> tags. For more details
+   --   see http://projects.haskell.org/xmobar/#system-monitor-plugins.
+   , commands =
+
+
+        -- weather monitor
+        [ Run Weather "RJTT" [ "--template", "<skyCondition> | <fc=#4682B4><tempC></fc>°C | <fc=#4682B4><rh></fc>% | <fc=#4682B4><pressure></fc>hPa"
+                             ] 36000
+
+        -- network activity monitor (dynamic interface resolution)
+        --, Run DynNetwork     [ "--template" , " <dev>: <tx>kB/s  <rx>kB/s "
+        , Run DynNetwork     [ "--template" , " <rx> kB/s  <tx> kB/s"
+                             , "--Low"      , "1000"       -- units: B/s
+                             , "--High"     , "5000"       -- units: B/s
+                             , "--low"      , "#689D6A"
+                             , "--normal"   , "#D65D0E"
+                             , "--high"     , "#CC241D"
+                             ] 10
+
+
+        -- StdinReader, puts info about workspaces, window in the xmobar
+        , Run UnsafeStdinReader
+        --, Run StdinReader
+
+
+        -- Wireless Activity
+        , Run Wireless "wlo1"
+                          [ "-a", "l"
+                          --, "-w", "4"
+                          --, "-t", " <quality>%   <essid>"
+                          , "-t", " <quality>%"
+                          , "-L", "50"
+                          , "-H", "75"
+                          , "-l", "#CC241D"
+                          , "-n", "#D65D0E"
+                          , "-h", "#689D6A"
+                          ] 10
+
+        -- cpu activity monitor
+        , Run MultiCpu       [ "--template" , " <total>%"
+                             , "--Low"      , "50"         -- units: %
+                             , "--High"     , "85"         -- units: %
+                             , "--low"      , "#689D6A"
+                             , "--normal"   , "#D65D0E"
+                             , "--high"     , "#CC241D"
+                             ] 10
+
+        -- cpu core temperature monitor
+        , Run CoreTemp       [ "--template" , " <core0>°C"
+                             , "--Low"      , "70"        -- units: °C
+                             , "--High"     , "80"        -- units: °C
+                             , "--low"      , "#689D6A"
+                             , "--normal"   , "#D65D0E"
+                             , "--high"     , "#CC241D"
+                             ] 50
+
+        -- memory usage monitor
+        , Run Memory         [ "--template" ," <usedratio>%"
+                             , "--Low"      , "30"        -- units: %
+                             , "--High"     , "90"        -- units: %
+                             , "--low"      , "#689D6A"
+                             , "--normal"   , "#D65D0E"
+                             , "--high"     , "#CC241D"
+                             ] 10
+
+        -- battery monitor
+        , Run Battery        [ "--template" , "<acstatus>"
+                             , "--Low"      , "20"        -- units: %
+                             , "--High"     , "80"        -- units: %
+                             , "--low"      , "#CC241D"
+                             , "--normal"   , "#D65D0E"
+                             , "--high"     , "#689D6A"
+                             ---, "--low"      , "<fc=#dAA520>  </fc>"
+                             ---, "--normal"   , "<fc=#006000>    </fc>"
+                             ---, "--high"     , "<fc=#006000>    </fc>"
+
+                             , "--" -- battery specific options
+                                       -- discharging status
+                                       --, "-o"	, "   <left>% [<timeleft>]"
+                                       , "-o"	, " <left>%"
+                                       , "-a", "notify-send -u critical '!!! BATTERY RUNNING OUT !!!'"
+                                       , "-A", "20"
+                                       -- AC "on" status
+                                       , "-O"	, "<fc=#D65D0E>  </fc><left>%"
+                                       -- charged status
+                                       , "-i"	, "<fc=#689D6A>  </fc><left>%"
+                             ] 10
+
+        -- time and date indicator
+        --   (%F = y-m-d date, %a = day of week, %T = h:m:s time)
+        , Run Date           " %a %d %b  %R" "date" 10
+        ]
+   }

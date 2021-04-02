@@ -1,0 +1,18 @@
+00:00:00.326346 VirtualBox GUI VM Selector Window 6.1.8 r137981 linux.amd64 (May 18 2020 06:23:25) release log
+00:00:00.326349 Log opened 2020-05-25T00:02:07.968491000Z
+00:00:00.326350 Build Type: release
+00:00:00.326353 OS Product: Linux
+00:00:00.326355 OS Release: 5.6.13-arch1-1
+00:00:00.326356 OS Version: #1 SMP PREEMPT Thu, 14 May 2020 06:52:53 +0000
+00:00:00.326380 DMI Product Name: HP Pavilion Gaming Laptop 15-cx0xxx
+00:00:00.326389 DMI Product Version: Type1ProductConfigId
+00:00:00.326395 Firmware type: UEFI
+00:00:00.327837 Secure Boot: Disabled
+00:00:00.327899 Host RAM: 7852MB (7.6GB) total, 6490MB (6.3GB) available
+00:00:00.327903 Executable: /usr/lib/virtualbox/VirtualBox
+00:00:00.327904 Process ID: 64679
+00:00:00.327905 Package type: LINUX_64BITS_GENERIC (OSE)
+00:00:00.327950 Qt version: 5.14.2
+00:00:00.369166 GUI: UIMediumEnumerator: Medium-enumeration started...
+00:00:00.676546 GUI: UIDesktopWidgetWatchdog::sltHandleHostScreenAvailableGeometryCalculated: Screen 0 work area is actually resized to: 6x6 x 946x1062
+00:00:00.695748 GUI: UIMediumEnumerator: Medium-enumeration finished!
