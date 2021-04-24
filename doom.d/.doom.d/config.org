@@ -1,0 +1,882 @@
+#+TITLE: Emacs Configuration
+# #+PROPERTY: header-args:emacs-lisp :tangle /home/munra/.doom.d/config.el
+#+PROPERTY: header-args :tangle /home/munra/.doom.d/config.el
+#+AUTHOR: Cesar Rodriguez
+
+* TABLE OF CONTENTS :toc:
+- [[#general][General]]
+  - [[#splash-screen][Splash Screen]]
+- [[#user-name-and-email][User name and email]]
+- [[#font][Font]]
+- [[#theme][Theme]]
+- [[#transparency][Transparency]]
+- [[#org-mode][Org mode]]
+- [[#line-numbers][Line numbers]]
+- [[#centaur-tabs][Centaur Tabs]]
+- [[#fringe][Fringe]]
+- [[#parenthesis][Parenthesis]]
+- [[#modline][Modline]]
+- [[#undo-tree-mode][Undo-tree-mode]]
+- [[#writeroom-configs][WriteRoom Configs]]
+- [[#darkroom][Darkroom]]
+- [[#company-mode][Company-mode]]
+- [[#nyan-mode][Nyan-mode]]
+- [[#ligatures][Ligatures]]
+- [[#custom-functions-and-commands][Custom functions and Commands]]
+  - [[#move-to-beginning-of-line][Move to beginning of line]]
+  - [[#write-with-w-and-w][Write with "W" and "w"]]
+  - [[#exit-insert-mode-by-pressing-k-and-then-j-quickly][Exit insert mode by pressing k and then j quickly]]
+  - [[#startup-performance][Startup Performance]]
+- [[#python][Python]]
+- [[#miscellaneous][Miscellaneous]]
+  - [[#clock][Clock]]
+  - [[#ivy][Ivy]]
+
+* General
+
+Here are some additional functions/macros that could help you configure Doom:
+
+ + `load!' for loading external *.el files relative to this one
+ + `use-package!' for configuring packages
+ + `after!' for running code after a package has loaded
+ + `add-load-path!' for adding directories to the `load-path', relative to
+   this file. Emacs searches the `load-path' when you load packages with
+   `require' or `use-package'.
+ + `map!' for binding new keys
+
+ To get information about any of these functions/macros, move the cursor over
+ the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
+ This will open documentation for it, including demos of how they are use.
+
+ You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
+ they are implemented.
+
+** Splash Screen
+This code was took from:
+https://github.com/tecosaur/emacs-config/blob/master/config.org#splash-screen
+
+#+begin_src emacs-lisp
+
+(defvar fancy-splash-image-template
+  (expand-file-name "/home/munra/.doom.d/misc/emacs-e.svg" doom-private-dir)
+  "Default template svg used for the splash image, with substitutions from ")
+
+(defvar fancy-splash-sizes
+  `((:height 300 :min-height 50 :padding (0 . 2))
+    (:height 250 :min-height 42 :padding (2 . 4))
+    (:height 200 :min-height 35 :padding (3 . 3))
+    (:height 150 :min-height 28 :padding (3 . 3))
+    (:height 100 :min-height 20 :padding (2 . 2))
+    (:height 75  :min-height 15 :padding (2 . 1))
+    (:height 50  :min-height 10 :padding (1 . 0))
+    (:height 1   :min-height 0  :padding (0 . 0)))
+  "list of plists with the following properties
+  :height the height of the image
+  :min-height minimum `frame-height' for image
+  :padding `+doom-dashboard-banner-padding' (top . bottom) to apply
+  :template non-default template file
+  :file file to use instead of template")
+
+(defvar fancy-splash-template-colours
+  '(("$colour1" . keywords) ("$colour2" . type) ("$colour3" . base5) ("$colour4" . base8))
+  "list of colour-replacement alists of the form (\"$placeholder\" . 'theme-colour) which applied the template")
+
+(unless (file-exists-p (expand-file-name "theme-splashes" doom-cache-dir))
+  (make-directory (expand-file-name "theme-splashes" doom-cache-dir) t))
+
+(defun fancy-splash-filename (theme-name height)
+  (expand-file-name (concat (file-name-as-directory "theme-splashes")
+                            theme-name
+                            "-" (number-to-string height) ".svg")
+                    doom-cache-dir))
+
+(defun fancy-splash-clear-cache ()
+  "Delete all cached fancy splash images"
+  (interactive)
+  (delete-directory (expand-file-name "theme-splashes" doom-cache-dir) t)
+  (message "Cache cleared!"))
+
+(defun fancy-splash-generate-image (template height)
+  "Read TEMPLATE and create an image if HEIGHT with colour substitutions as
+   described by `fancy-splash-template-colours' for the current theme"
+  (with-temp-buffer
+    (insert-file-contents template)
+    (re-search-forward "$height" nil t)
+    (replace-match (number-to-string height) nil nil)
+    (dolist (substitution fancy-splash-template-colours)
+      (goto-char (point-min))
+      (while (re-search-forward (car substitution) nil t)
+        (replace-match (doom-color (cdr substitution)) nil nil)))
+    (write-region nil nil
+                  (fancy-splash-filename (symbol-name doom-theme) height) nil nil)))
+
+(defun fancy-splash-generate-images ()
+  "Perform `fancy-splash-generate-image' in bulk"
+  (dolist (size fancy-splash-sizes)
+    (unless (plist-get size :file)
+      (fancy-splash-generate-image (or (plist-get size :template)
+                                       fancy-splash-image-template)
+                                   (plist-get size :height)))))
+
+(defun ensure-theme-splash-images-exist (&optional height)
+  (unless (file-exists-p (fancy-splash-filename
+                          (symbol-name doom-theme)
+                          (or height
+                              (plist-get (car fancy-splash-sizes) :height))))
+    (fancy-splash-generate-images)))
+
+(defun get-appropriate-splash ()
+  (let ((height (frame-height)))
+    (cl-some (lambda (size) (when (>= height (plist-get size :min-height)) size))
+             fancy-splash-sizes)))
+
+(setq fancy-splash-last-size nil)
+(setq fancy-splash-last-theme nil)
+(defun set-appropriate-splash (&rest _)
+  (let ((appropriate-image (get-appropriate-splash)))
+    (unless (and (equal appropriate-image fancy-splash-last-size)
+                 (equal doom-theme fancy-splash-last-theme)))
+    (unless (plist-get appropriate-image :file)
+      (ensure-theme-splash-images-exist (plist-get appropriate-image :height)))
+    (setq fancy-splash-image
+          (or (plist-get appropriate-image :file)
+              (fancy-splash-filename (symbol-name doom-theme) (plist-get appropriate-image :height))))
+    (setq +doom-dashboard-banner-padding (plist-get appropriate-image :padding))
+    (setq fancy-splash-last-size appropriate-image)
+    (setq fancy-splash-last-theme doom-theme)
+    (+doom-dashboard-reload)))
+
+(add-hook 'window-size-change-functions #'set-appropriate-splash)
+(add-hook 'doom-load-theme-hook #'set-appropriate-splash)
+#+end_src
+
+* User name and email
+Some functionality uses this to identify you, e.g. GPG configuration, email
+clients, file templates and snippets.
+
+#+begin_src emacs-lisp
+
+(setq user-full-name "John Doe"
+      user-mail-address "john@doe.com")
+(require 'cl)
+#+end_src
+
+* Font
+Doom exposes five (optional) variables for controlling fonts in Doom. Here
+are the three important ones:
+
+ + `doom-font'
+ + `doom-variable-pitch-font'
+ + `doom-big-font' -- used for `doom-big-font-mode'; use this for
+    presentations or streaming.
+
+Settings related to fonts within Doom Emacs:
+
+     ‘doom-font’ – standard monospace font that is used for most things in Emacs.
+     ‘doom-variable-pitch-font’ – variable font which is useful in some Emacs plugins.
+     ‘doom-big-font’ – used in doom-big-font-mode; useful for presentations.
+     ‘font-lock-comment-face’ – for comments.
+     ‘font-lock-keyword-face’ – for keywords with special significance, like ‘for’ and ‘if’ in C.
+
+They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
+font string. You generally only need these two:
+
+;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
+;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
+
+;; (setq doom-font (font-spec :family "JetBrains Mono" :size 22 :weight 'Medium)
+;;        doom-big-font (font-spec :family "JetBrains Mono" :size 25)
+;;        doom-variable-pitch-font (font-spec :family "JetBrains Mono" :size 22 :weight 'Bold))
+;; (setq-default line-spacing 4)
+
+;; (setq doom-font (font-spec :family "Hack" :size 22 :weight 'Regular :height 170)
+;;        doom-variable-pitch-font (font-spec :family "Hack" :size 20 :height 170)
+;;        doom-big-font (font-spec :family "Hack" :size 24 :height 170))
+
+;; (setq doom-font (font-spec :family "JetBrains Mono NL" :size 24 :weight 'ExtraBold :height 230)
+;;        doom-variable-pitch-font (font-spec :family "JetBrains Mono NL" :size 24 :height 230)
+;;        doom-big-font (font-spec :family "JetBrains Mono NL" :size 24 :height 230)
+;;        doom-serif-font (font-spec :family "JetBrains Mono NL" :size 24 :height 230))
+
+
+;; (setq doom-font (font-spec :family "Iosevka Extended" :size 23 :weight 'ExtraBold :height 230)
+;;        doom-variable-pitch-font (font-spec :family "Iosevka Extended" :size 23 :height 230)
+;;        doom-big-font (font-spec :family "Iosevka Extended" :size 23 :height 230)
+;;        doom-serif-font (font-spec :family "Iosevka Extended" :size 23 :height 230))
+
+#+begin_src emacs-lisp
+(setq doom-font (font-spec :family "JetBrainsMono NL" :size 23 :weight 'ExtraBold :height 230)
+       doom-variable-pitch-font (font-spec :family "JetBrainsMono NL" :size 23 :height 230)
+       doom-unicode-font (font-spec :family "JuliaMono" :size 23 :height 230)
+       doom-big-font (font-spec :family "JetBrainsMono NL" :size 23 :height 230)
+       doom-serif-font (font-spec :family "JetBrainsMono NL" :size 23 :height 230))
+#+end_src
+
+;; (setq doom-font (font-spec :family "JetBrains Mono" :size 23 :weight 'ExtraBold :height 230)
+;;        doom-variable-pitch-font (font-spec :family "JetBrains Mono" :size 23 :height 230)
+;;        doom-big-font (font-spec :family "JetBrains Mono" :size 23 :height 230))
+
+;; (setq doom-font (font-spec :family "Cascadia Code" :size 25 :weight 'SemiBold :height 230)
+;;        doom-variable-pitch-font (font-spec :family "Cascadia Code" :size 25 :height 230)
+;;        doom-big-font (font-spec :family "Cascadia Code" :size 25 :height 230))
+
+#+begin_src emacs-lisp
+
+(after! doom-themes
+  (setq doom-themes-enable-bold t
+        doom-themes-enable-italic t))
+
+(custom-set-faces!
+  '(font-lock-comment-face :slant italic)
+  '(font-lock-keyword-face :slant italic))
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+(setq line-spacing 0.2)
+
+#+end_src
+
+* Theme
+ There are two ways to load a theme. Both *assume* the theme is installed and
+ available. You can either set `doom-theme' or manually load a theme with the
+ `load-theme' function. This is the default:
+;;(setq doom-theme 'doom-one)
+
+#+begin_src emacs-lisp
+
+(setq doom-theme 'doom-gruvbox)
+
+#+end_src
+
+* Transparency
+
+Config transparency code from https://github.com/dwcoates/doom-emacs-config/blob/master/config.el
+
+#+begin_src emacs-lisp
+
+(defconst doom-frame-transparency 95)
+(set-frame-parameter (selected-frame) 'alpha doom-frame-transparency)
+(add-to-list 'default-frame-alist `(alpha . ,doom-frame-transparency))
+(defun dwc-smart-transparent-frame ()
+  (set-frame-parameter
+    (selected-frame)
+    'alpha (if (frame-parameter (selected-frame) 'fullscreen)
+              100
+             doom-frame-transparency)))
+
+#+end_src
+
+This is another config for Set frame transparency and maximize windows by default.
+Not tested.
+
+;; (unless dw/is-termux
+;;   (set-frame-parameter (selected-frame) 'alpha '(90 . 90))
+;;   (add-to-list 'default-frame-alist '(alpha . (90 . 90)))
+;;   (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+;;   (add-to-list 'default-frame-alist '(fullscreen . maximized)))
+
+
+
+* Org mode
+
+#+begin_src emacs-lisp
+
+(after! org
+  (require 'org-bullets)  ; Nicer bullets in org-mode
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  (setq org-directory "~/Storage/Org/"
+        org-agenda-files '("~/Storage/Org/agenda.org")
+        org-default-notes-file (expand-file-name "notes.org" org-directory)
+        org-ellipsis " ▼ "
+        org-log-done 'time
+        org-journal-dir "~/Org/Storage/journal/"
+        org-journal-date-format "%B %d, %Y (%A)"
+        org-journal-file-format "%Y-%m-%d.org"
+        org-hide-emphasis-markers t
+        ;; org-fontify-whole-heading-line t
+        ;; ex. of org-link-abbrev-alist in action
+        ;; [[arch-wiki:Name_of_Page][Description]]
+        ;; org-link-abbrev-alist    ; This overwrites the default Doom org-link-abbrev-list
+        ;;   '(("google" . "http://www.google.com/search?q=")
+        ;;     ("arch-wiki" . "https://wiki.archlinux.org/index.php/")
+        ;;     ("ddg" . "https://duckduckgo.com/?q=")
+        ;;     ("wiki" . "https://en.wikipedia.org/wiki/"))
+        ;; org-todo-keywords        ; This overwrites the default Doom org-todo-keywords
+        ;;   '((sequence
+        ;;      "TODO(t)"           ; A task that is ready to be tackled
+        ;;      "BLOG(b)"           ; Blog writing assignments
+        ;;      "GYM(g)"            ; Things to accomplish at the gym
+        ;;      "PROJ(p)"           ; A project that contains other tasks
+        ;;      "VIDEO(v)"          ; Video assignments
+        ;;      "WAIT(w)"           ; Something is holding up this task
+        ;;      "|"                 ; The pipe necessary to separate "active" states and "inactive" states
+        ;;      "DONE(d)"           ; Task has been completed
+        ;;      "CANCELLED(c)" )))) ; Task has been cancelled
+        ))
+;; ;; Increase the size of various headings
+;; (set-face-attribute 'org-document-title nil :font "JetBrainsMono NL" :weight 'Extrabold :height 1.3)
+;; (dolist (face '((org-level-1 . 1.2)
+;;                 (org-level-2 . 1.1)
+;;                 (org-level-3 . 1.05)
+;;                 (org-level-4 . 1.0)
+;;                 (org-level-5 . 1.1)
+;;                 (org-level-6 . 1.1)
+;;                 (org-level-7 . 1.1)
+;;                 (org-level-8 . 1.1)))
+;;   (set-face-attribute (car face) nil :font "JetBrainsMono NL" :weight 'medium :height (cdr face)))
+
+;; ;; Make sure org-indent face is available
+;; (require 'org-indent)
+
+#+end_src
+
+If you use `org' and don't want your org files in the default location below,
+change `org-directory'. It must be set before org loads!
+
+;; (setq org-directory "~/Storage/org/")
+
+
+Makes sense to have list bullets change with depth
+#+begin_src emacs-lisp
+(setq org-list-demote-modify-bullet '(("+" . "-") ("-" . "+") ("*" . "+") ("1." . "a.")))
+#+end_src
+This was taked from: https://tecosaur.github.io/emacs-config/config.html#applications
+
+* Line numbers
+ This determines the style of line numbers in effect. If set to `nil', line
+ numbers are disabled. For relative line numbers, set this to `relative'.
+
+;;(setq display-line-numbers-type t)
+;; (setq display-line-numbers-type `relative)
+
+#+begin_src emacs-lisp
+
+(setq-default display-line-numbers-type `relative)
+
+#+end_src
+
+Double-spaces after periods is morally wrong.
+#+begin_src emacs-lisp
+
+(setq sentence-end-double-space nil )
+
+#+end_src
+
+* Centaur Tabs
+
+#+begin_src emacs-lisp
+
+(setq ;centaur-tabs-set-bar 'over
+      ;centaur-tabs-set-icons t
+      ;centaur-tabs-gray-out-icons 'buffer
+      ;centaur-tabs-height 24
+      centaur-tabs-set-bar 'under
+      centaur-tabs-set-close-button nil
+      centaur-tabs-set-modified-marker t
+      ;; centaur-tabs-style "bar"
+      centaur-tabs-style "chamfer"
+      centaur-tabs-modified-marker "⚫")
+
+#+end_src
+
+* Fringe
+Make the left fringe 4 pixels wide and the right disappear
+
+#+begin_src emacs-lisp
+
+(setq fringe-mode 8)
+
+#+end_src
+
+* Parenthesis
+
+If you genuinely want rainbow-mode to be global, everywhere, you can easily define a global minor mode yourself:
+
+#+begin_src emacs-lisp
+
+(define-globalized-minor-mode my-global-rainbow-mode rainbow-mode
+  (lambda () (rainbow-mode 1)))
+(my-global-rainbow-mode 1)
+
+#+end_src
+
+Use rainbow-mode in some specific mode:
+
+;; (add-hook 'css-mode-hook 'my-css-mode-hook)
+;; (defun my-css-mode-hook ()
+;;   (rainbow-mode 1))
+
+* Modline
+
+;; (setq doom-modeline-height 1)
+;; (set-face-attribute 'mode-line nil :family "Fira Code" :height 0.4)
+;; (set-face-attribute 'mode-line-inactive nil :family "Fira Code" :height 0.4)
+
+;; (custom-set-faces
+;;   '(mode-line ((t (:family "JetBrains Mono NL" :height 110))))
+;;   '(mode-line-inactive ((t (:family "JetBrains Mono NL" :height 110)))))
+
+#+begin_src emacs-lisp
+
+(custom-set-faces
+  '(mode-line ((t (:family "Cascadia Code" :size 16))))
+  '(mode-line-inactive ((t (:family "Cascadia Code" :size 16)))))
+
+#+end_src
+
+ Determines the style used by `doom-modeline-buffer-file-name'.
+
+ Given ~/Projects/FOSS/emacs/lisp/comint.el
+  +  auto :: emacs/lisp/comint.el (in a project) or comint.el
+  +  truncate-upto-project :: ~/P/F/emacs/lisp/comint.el
+  +  truncate-from-project :: ~/Projects/FOSS/emacs/l/comint.el
+  +  truncate-with-project :: emacs/l/comint.el
+  +  truncate-except-project :: ~/P/F/emacs/l/comint.el
+  +  truncate-upto-root :: ~/P/F/e/lisp/comint.el
+  +  truncate-all :: ~/P/F/e/l/comint.el
+  +  truncate-nil :: ~/Projects/FOSS/emacs/lisp/comint.el
+  +  relative-from-project :: emacs/lisp/comint.el
+  +  relative-to-project :: lisp/comint.el
+  +  file-name :: comint.el
+  +  buffer-name :: comint.el<2> (uniquify buffer name)
+
+ If you are experiencing the laggy issue, especially while editing remote files
+ with tramp, please try `file-name' style.
+ Please refer to https://github.com/bbatsov/projectile/issues/657.
+
+ #+begin_src emacs-lisp
+
+(setq doom-modeline-buffer-file-name-style 'truncate-nil)
+
+ #+end_src
+
+
+Whether display the minor modes in the mode-line.
+#+begin_src emacs-lisp
+
+(setq doom-modeline-minor-modes nil)
+
+#+end_src
+
+
+If non-nil, a word count will be added to the selection-info modeline segment.
+;; (setq doom-modeline-enable-word-count t)
+#+begin_src emacs-lisp
+
+(setq doom-modeline-enable-word-count nil)
+
+#+end_src
+
+
+Whether display the indentation information.
+;; (setq doom-modeline-indent-info t)
+#+begin_src emacs-lisp
+
+(setq doom-modeline-indent-info nil)
+
+#+end_src
+
+
+ Major modes in which to display word count continuously.
+ Also applies to any derived modes. Respects `doom-modeline-enable-word-count'.
+ If it brings the sluggish issue, disable `doom-modeline-enable-word-count' or
+ remove the modes from `doom-modeline-continuous-word-count-modes'.
+#+begin_src emacs-lisp
+
+(setq doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode))
+
+#+end_src
+
+* Undo-tree-mode
+
+Turn on everywhere
+;; (global-undo-tree-mode 1)
+
+Make ctrl-z undo
+;; (global-set-key (kbd "C-z") 'undo)
+
+make ctrl-Z redo
+;; (defalias 'redo 'undo-tree-redo)
+;; (global-set-key (kbd "C-S-z") 'redo)
+
+#+begin_src emacs-lisp
+
+(use-package undo-tree
+  :diminish undo-tree-mode
+  :config
+  (progn
+    (global-undo-tree-mode)
+    (setq undo-tree-visualizer-timestamps t)
+    (setq undo-tree-visualizer-diff t)))
+
+#+end_src
+
+* WriteRoom Configs
+
+;; (setq writeroom-width 120)
+
+* Darkroom
+
+#+begin_src emacs-lisp
+
+(use-package darkroom
+  :commands darkroom-mode
+  :config
+  (setq display-line-numbers-mode 0)
+  (setq darkroom-text-scale-increase 0))
+
+(map! :leader
+      :desc "DarkRoom"
+      "t z" #'darkroom-mode)
+
+#+end_src
+
+* Company-mode
+
+;; from modules/completion/company/config.el
+;; (use-package! company  ; `use-package!' is a thin wrapper around `use-package'
+;;                        ; it is required that you use this in Doom's modules,
+;;                        ; but not required to be used in your private config.
+;;   :commands (company-mode global-company-mode company-complete
+;;              company-complete-common company-manual-begin company-grab-line)
+;;   :config
+;;   (setq company-idle-delay nil
+;;         company-tooltip-limit 10
+;;         company-dabbrev-downcase nil
+;;         company-dabbrev-ignore-case nil))
+
+
+;; (after! company
+;;   (setq company-idle-delay 0.5
+;;         company-minimum-prefix-length 2)
+;;   (setq company-show-numbers t)
+;;   (add-hook 'evil-normal-state-entry-hook #'company-abort)) ;; make aborting less annoying.
+
+
+;; (use-package company
+;;   :ensure t
+;;   :init
+;;   (add-hook 'after-init-hook 'global-company-mode)
+;;   :config
+;;   (setq company-dabbrev-downcase 0)
+;;   (setq company-idle-delay 0.1)
+;;   (setq company-minimum-prefix-length 1)
+;;   (setq company-tooltip-align-annotations t))
+
+;; (use-package company
+;;   :hook (prog-mode . company-mode)
+;;   :diminish)
+;;
+
+;; (use-package company
+;;   :ensure t
+;;   :init
+;;   (add-hook 'after-init-hook 'global-company-mode))
+
+#+begin_src emacs-lisp
+
+(use-package company
+  :ensure t
+  :init (add-hook ' after-init-hook 'global-company-mode)
+  :config
+  (setq company-idle-delay 0
+        company-minimum-prefix-length 3
+        company-tooltip-limit 5
+        company-tooltip-align-annotations t
+        company-show-numbers t)
+  ;; (setq company-backends
+  ;;       '((company-files
+  ;;          company-yasnippet
+  ;;          company-keywords
+  ;;          company-capf)
+  ;;         (company-abbrev company-dabbrev)))
+)
+
+#+end_src
+
+;; (use-package irony
+;;   :ensure t
+;;   :config
+;;   (add-hook 'c++-mode-hook  'irony-mode)
+;;   (add-hook 'c-mode-hook    'irony-mode)
+;;   (add-hook 'objc-mode-hook 'irony-mode)
+;;   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+
+#+begin_src emacs-lisp
+
+(add-hook 'c++-mode-hook  'irony-mode)
+(add-hook 'c-mode-hook    'irony-mode)
+(add-hook 'objc-mode-hook 'irony-mode)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+(use-package company-irony
+  :ensure t
+  :config
+  ;; (require 'company 'irony)
+  :after (company irony)
+  (add-to-list 'company-backends '(company-irony :with company-capf)))
+
+#+end_src
+
+;; (use-package company-anaconda
+;;   :ensure t
+;;   :config
+;;   (require 'company)
+;;   (add-to-list 'company-backends '(company-anaconda :with company-capf)))
+
+#+begin_src emacs-lisp
+
+(use-package company-anaconda
+  :ensure t
+  :after (company anaconda-mode)
+  :config
+  ;;(require 'company)
+  (add-to-list 'company-backends '(company-anaconda :with company-capf)))
+
+#+end_src
+
+;; (use-package company-jedi
+;;   :ensure t
+;;   :init
+;;   (add-hook 'python-mode-hook (add-to-list 'company-backends 'company-jedi)))
+
+#+begin_src emacs-lisp
+
+(use-package beacon
+  :ensure t
+  :config
+  (setq beacon-blink-when-point-moves-vertically 2) ; default nil
+  (setq beacon-blink-when-point-moves-horizontally 2) ; default nil
+  (setq beacon-blink-when-buffer-changes t) ; default t
+  (setq beacon-blink-when-window-scrolls t) ; default t
+  (setq beacon-blink-when-window-changes t) ; default t
+  (setq beacon-blink-when-focused t) ; default nil
+  (setq beacon-blink-duration 0.5) ; default 0.3
+  (setq beacon-blink-delay 0.5) ; default 0.3
+  (setq beacon-size 50) ; default 40
+  ;; (setq beacon-color "yellow") ; default 0.5
+  (setq beacon-color 0.5) ; default 0.5
+  (setq beacon-push-mark 10) ;????, what this mean?
+  (beacon-mode 1))
+
+#+end_src
+
+* Nyan-mode
+
+#+begin_src emacs-lisp
+
+(use-package nyan-mode
+  :ensure t
+  :config
+  (nyan-mode)
+  (nyan-start-animation))
+
+#+end_src
+
+* Ligatures
+#+begin_src emacs-lisp
+
+;; (defconst jetbrains-ligature-mode--ligatures
+;;    '("-->" "//" "/**" "/*" "*/" "<!--" ":=" "->>" "<<-" "->" "<-"
+;;      "<=>" "==" "!=" "<=" ">=" "=:=" "!==" "&&" "||" "..." ".."
+;;      "|||" "///" "&&&" "===" "++" "--" "=>" "|>" "<|" "||>" "<||"
+;;      "|||>" "<|||" ">>" "<<" "::=" "|]" "[|" "{|" "|}"
+;;      "[<" ">]" ":?>" ":?" "/=" "[||]" "!!" "?:" "?." "::"
+;;      "+++" "??" "###" "##" ":::" "####" ".?" "?=" "=!=" "<|>"
+;;      "<:" ":<" ":>" ">:" "<>" "***" ";;" "/==" ".=" ".-" "__"
+;;      "=/=" "<-<" "<<<" ">>>" "<=<" "<<=" "<==" "<==>" "==>" "=>>"
+;;      ">=>" ">>=" ">>-" ">-" "<~>" "-<" "-<<" "=<<" "---" "<-|"
+;;      "<=|" "/\\" "\\/" "|=>" "|~>" "<~~" "<~" "~~" "~~>" "~>"
+;;      "<$>" "<$" "$>" "<+>" "<+" "+>" "<*>" "<*" "*>" "</>" "</" "/>"
+;;      "<->" "..<" "~=" "~-" "-~" "~@" "^=" "-|" "_|_" "|-" "||-"
+;;      "|=" "||=" "#{" "#[" "]#" "#(" "#?" "#_" "#_(" "#:" "#!" "#="
+;;      "&="))
+
+;; (dolist (pat jetbrains-ligature-mode--ligatures)
+;;   (set-char-table-range composition-function-table
+;;                       (aref pat 0)
+;;                       (nconc (char-table-range composition-function-table (aref pat 0))
+;;                              (list (vector (regexp-quote pat)
+;;                                            0
+;;                                     'compose-gstring-for-graphic)))))
+
+#+end_src
+
+* Custom functions and Commands
+
+** Move to beginning of line
+
+This function was taked from: https://pages.sachachua.com/.emacs.d/Sacha.html which was
+inspired by  http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/
+
+
+#+begin_src emacs-lisp
+
+(defun my/smarter-move-beginning-of-line (arg)
+  "Move point back to indentation of beginning of line.
+
+Move point to the first non-whitespace character on this line.
+If point is already there, move to the beginning of the line.
+Effectively toggle between the first non-whitespace character and
+the beginning of the line.
+
+If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+point reaches the beginning or end of the buffer, stop there."
+  (interactive "^p")
+  (setq arg (or arg 1))
+
+  ;; Move lines first
+  (when (/= arg 1)
+    (let ((line-move-visual nil))
+      (forward-line (1- arg))))
+
+  (let ((orig-point (point)))
+    (back-to-indentation)
+    (when (= orig-point (point))
+      (move-beginning-of-line 1))))
+
+;; remap C-a to `smarter-move-beginning-of-line'
+(global-set-key [remap (evil-digit-argument-or-evil-beginning-of-line)]
+                'my/smarter-move-beginning-of-line)
+
+#+end_src
+
+** Write with "W" and "w"
+doom.d/config.el
+
+#+begin_src emacs-lisp
+
+(evil-ex-define-cmd "W" #'evil-write)
+
+#+end_src
+
+** Exit insert mode by pressing k and then j quickly
+
+#+begin_src emacs-lisp
+
+(setq key-chord-two-keys-delay 0.5)
+(key-chord-define evil-insert-state-map "kj" 'evil-normal-state)
+(key-chord-mode 1)
+
+#+end_src
+
+** Startup Performance
+Doesn't seem to work in Doom Emacs but apparently doesn't hurt to the config.
+Anyway better don't take the risk, comment this one.
+
+;; ;; The default is 800 kilobytes.  Measured in bytes.
+;; (setq gc-cons-threshold (* 50 1000 1000))
+
+;; ;; Profile emacs startup
+;; (add-hook 'emacs-startup-hook
+;;           (lambda ()
+;;             (message "*** Emacs loaded in %s with %d garbage collections."
+;;                      (format "%.2f seconds"
+;;                              (float-time
+;;                               (time-subtract after-init-time before-init-time)))
+;;                      gcs-done)))
+
+* Python
+Preferred mode of ~M-x run-python~
+
+;; (require 'python)
+;; (setq python-shell-interpreter "ipython")
+;; (setq python-shell-interpreter-args "--pylab")
+
+
+* Miscellaneous
+
+I find it useful to have a slightly more apparent indicator of which buffer is active at the moment.
+
+;; (use-package dimmer
+;;   :custom (dimmer-fraction 0.1)
+;;   :config (dimmer-mode))
+
+
+;; (use-package crosshairs
+;; ;;  :enabled
+;; ;;  :defer nil
+;;   :config
+;;   (crosshairs-mode))
+
+Confirm-kill-emacs is non-nil by default. The doom-quit module only
+adds silly confirmation messages to it. To disable it completely:
+
+#+begin_src emacs-lisp
+
+(setq confirm-kill-emacs nil)
+
+#+end_src
+
+Highlight current column
+;; (column-highlight-mode 1)
+;; (set-face-attribute 'col-highlight nil :inherit 'hl-line :background)
+
+Enable and configure recentf-mode (recent-files)
+;; (setq recentf-max-saved-items 200)
+;; (setq recentf-max-menu-items 50)
+
+Diminish
+;; (use-package diminish :defer t)
+
+(setq ispell-dictionary "american")
+
+(setq shell-pop-window-size 50)
+
+Sublimity config
+;; (require 'sublimity-scroll)
+;; (require 'sublimity-map)
+;; (require 'sublimity-attractive)
+;; (sublimity-mode 1)
+
+OR
+
+;; (setq sublimity-map-size 20)
+;; (setq sublimity-map-fraction 0.3)
+;; (setq sublimity-map-text-scale -7)
+
+#+begin_src emacs-lisp
+
+(use-package minions
+  :config
+  (setq minions-mode-line-lighter "")
+  (setq minions-mode-line-delimiters '("" . ""))
+  (minions-mode +1))
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+(use-package vterm
+  :commands vterm
+  :config
+  (setq vterm-max-scrollback 100000))
+
+#+end_src
+
+Make cursor the width of the character it is under i.e. full width of a TAB
+
+#+begin_src emacs-lisp
+
+(setq x-stretch-cursor t)
+
+#+end_src
+
+
+** Clock
+
+;; (display-time-mode 1)
+
+** Ivy
+#+begin_src emacs-lisp
+(use-package ivy-posframe
+  :after ivy
+  :diminish
+  :custom-face
+  ;; (ivy-posframe-border ((t (:background "#ffffff"))))
+  :config
+  (setq ivy-posframe-parameters '((internal-border-width . 1)))
+  (ivy-posframe-mode +1))
+#+end_src
