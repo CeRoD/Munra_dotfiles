@@ -260,23 +260,6 @@
   ;;(require 'company)
   (add-to-list 'company-backends '(company-anaconda :with company-capf)))
 
-(use-package beacon
-  :ensure t
-  :config
-  (setq beacon-blink-when-point-moves-vertically 2) ; default nil
-  (setq beacon-blink-when-point-moves-horizontally 2) ; default nil
-  (setq beacon-blink-when-buffer-changes t) ; default t
-  (setq beacon-blink-when-window-scrolls t) ; default t
-  (setq beacon-blink-when-window-changes t) ; default t
-  (setq beacon-blink-when-focused t) ; default nil
-  (setq beacon-blink-duration 0.5) ; default 0.3
-  (setq beacon-blink-delay 0.5) ; default 0.3
-  (setq beacon-size 50) ; default 40
-  ;; (setq beacon-color "yellow") ; default 0.5
-  (setq beacon-color 0.5) ; default 0.5
-  (setq beacon-push-mark 10) ;????, what this mean?
-  (beacon-mode 1))
-
 (use-package nyan-mode
   :ensure t
   :config
@@ -359,7 +342,28 @@ point reaches the beginning or end of the buffer, stop there."
   :after ivy
   :diminish
   :custom-face
-  ;; (ivy-posframe-border ((t (:background "#ffffff"))))
+  (ivy-posframe-border ((t (:background "#8f3f71"))))
   :config
-  (setq ivy-posframe-parameters '((internal-border-width . 1)))
+  (setq ivy-posframe-parameters
+      '((left-fringe . 8)
+        (right-fringe . 8)))
+  (setq ivy-posframe-parameters '((internal-border-width . 2)))
+  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-bottom-window-center)))
   (ivy-posframe-mode +1))
+
+(use-package beacon
+  :ensure t
+  :config
+  (setq beacon-blink-when-point-moves-vertically 2) ; default nil
+  (setq beacon-blink-when-point-moves-horizontally 2) ; default nil
+  (setq beacon-blink-when-buffer-changes t) ; default t
+  (setq beacon-blink-when-window-scrolls t) ; default t
+  (setq beacon-blink-when-window-changes t) ; default t
+  (setq beacon-blink-when-focused t) ; default nil
+  (setq beacon-blink-duration 0.5) ; default 0.3
+  (setq beacon-blink-delay 0.5) ; default 0.3
+  (setq beacon-size 10) ; default 40
+  ;; (setq beacon-color "yellow") ; default 0.5
+  (setq beacon-color 0.5) ; default 0.5
+  (setq beacon-push-mark 10) ;????, what this mean?
+  (beacon-mode 1))
