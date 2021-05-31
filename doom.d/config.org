@@ -32,6 +32,7 @@
   - [[#clock][Clock]]
   - [[#ivy][Ivy]]
   - [[#beacon-highlight-the-cursor-position][Beacon (highlight the cursor position)]]
+  - [[#org-appear][org-appear]]
 
 * General
 
@@ -895,5 +896,15 @@ Info take from: https://github.com/tumashu/ivy-posframe
   (setq beacon-color 0.5) ; default 0.5
   (setq beacon-push-mark 10) ;????, what this mean?
   (beacon-mode 1))
+
+#+end_src
+
+** org-appear
+
+Enables automatic visibility toggling depending on cursor position. Hidden element parts appear when the cursor enters an element and disappear when it leaves.
+
+#+begin_src emacs-lisp
+
+(add-hook 'org-mode-hook 'org-appear-mode)
 
 #+end_src
