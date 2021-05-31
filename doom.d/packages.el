@@ -42,6 +42,8 @@
 
 (package! nyan-mode)
 
+(package! org-appear)
+
 ;; (package! ligature)
 
 ;;Colorize color names in buffers
