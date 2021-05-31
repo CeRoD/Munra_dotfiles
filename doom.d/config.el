@@ -367,3 +367,5 @@ point reaches the beginning or end of the buffer, stop there."
   (setq beacon-color 0.5) ; default 0.5
   (setq beacon-push-mark 10) ;????, what this mean?
   (beacon-mode 1))
+
+(add-hook 'org-mode-hook 'org-appear-mode)
